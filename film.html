@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,7 @@
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"/>
-    
+
     <!-- Film CSS bağlantısı-->
       <link rel="stylesheet" href="film.css" />
 
@@ -64,10 +64,380 @@
     <link href="/font/css/solid.css" rel="stylesheet" />
   </head>
   <body>
-    
+  <style>
+    nav {
+      border-bottom: 2px solid #f6af78;
+      background-color: black !important;
+    }
+    .card:hover {
+      transform: scale(1.05); /* Kartın boyutunu büyütür */
+      transition: 1.5s;  /* Büyüme işlemi 1.5 saniyede gerçekleşir */
+      background-color: rgba(240, 147, 209, 0.862) !important; /* Kartın arka plan rengini değiştirir */
+      border: 2px solid rgb(0, 0, 0) !important;
+    }
+
+    body {    /* Arka plan rengi */
+      background-color: black;
+      color: white;
+    }
+    .theme-text { /* Varsayılan tema için yazıların beyaz olmasını sağlar */
+      color: white;
+    }
+
+    body.light-theme {      /* Light tema için body etiketi ayarları */
+      background-color: rgb(251, 246, 246);
+      color: rgb(8, 8, 8);
+    }
+    body.light-theme .theme-text {
+      color: black;
+    }
+    * {
+      transition: background-color 0.5s, color 0.5s;
+    }
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {   /* Başlık ve paragraf etiketlerinin metin rengini beyaz yapar */
+      color: white;
+    }
+    li:hover {
+      background-color: #674904;
+      transition: 0.5s;
+      border-radius: 10px;
+    }
+    .search-box {   /* Arama kutusu */
+      width: fit-content;
+      height: fit-content;
+      position: relative;
+    }
+    .input-search {   /* Arama kutusu içine yazılan metin kutusunun stili */
+      height: 50px;
+      width: 50px;
+      border-style: none;
+      padding: 10px;
+      font-size: 18px;
+      letter-spacing: 2px;
+      outline: none;
+      border-radius: 25px;
+      transition: all 0.5s ease-in-out;
+      background-color: #22a6b3;
+      padding-right: 40px;
+      color: #fff;
+    }
+    .input-search::placeholder {   /* Arama kutusuna yazılan placeholder metnin stili */
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 18px;
+      letter-spacing: 2px;
+      font-weight: 100;
+    }
+    .btn-search {   /* Arama butonunun stili */
+      width: 50px;
+      height: 50px;
+      border-style: none;
+      font-size: 20px;
+      font-weight: bold;
+      outline: none;
+      cursor: pointer;
+      border-radius: 50%;
+      position: absolute;
+      right: 0px;
+      color: #ffffff;
+      background-color: transparent;
+      pointer-events: painted; /* Fare olaylarını etkinleştirir */
+    }
+    .btn-search:focus ~ .input-search { /* Arama butonuna odaklanıldığında arama kutusunun genişliğini arttırır */
+      width: 300px;
+      border-radius: 0px;
+      background-color: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+    }
+    .input-search:focus {
+      width: 300px;
+      border-radius: 0px;
+      background-color: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+    }
+    .wrapper {
+      height: 50px;
+    }
+    #hide-checkbox {
+      opacity: 0;
+      height: 0;
+      width: 0;
+    }
+    .toggle {       /* Temayı değiştiren butonun stili */
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+      width: 100px; /*200px*/
+      height: 50px; /*100px*/
+      background: #211042;
+      border-radius: 50px;
+      transition: 500ms;
+      overflow: hidden;
+    }
+    .toggle-button {   /* Butonun hareket eden kısmını belirler */
+      position: absolute;
+      display: inline-block;
+      top: 7px;
+      left: 6px;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: #faeaf1;
+      overflow: hidden;
+      box-shadow: 0 0 35px 4px rgba(255, 255, 255);
+      transition: all 500ms ease-out;
+    }
+    .crater {  /* Kraterler (buton içindeki küçük yuvarlaklar) için stil */
+      position: absolute;
+      display: inline-block;
+      background: #faeaf1;
+      border-radius: 50%;
+      transition: 500ms;
+    }
+    .crater-1 {
+      background: #fffff9;
+      width: 86px;
+      height: 86px;
+      left: 10px;
+      bottom: 10px;
+    }
+    .crater-2 {
+      width: 20px;
+      height: 20px;
+      top: -7px;
+      left: 44px;
+    }
+    .crater-3 {
+      width: 16px;
+      height: 16px;
+      top: 20px;
+      right: -4px;
+    }
+    .crater-4 {
+      width: 10px;
+      height: 10px;
+      top: 24px;
+      left: 30px;
+    }
+    .crater-5 {
+      width: 15px;
+      height: 15px;
+      top: 40px;
+      left: 48px;
+    }
+    .crater-6 {
+      width: 10px;
+      height: 10px;
+      top: 48px;
+      left: 20px;
+    }
+    .crater-7 {
+      width: 12px;
+      height: 12px;
+      bottom: 5px;
+      left: 35px;
+    }
+    .star {  /* Yıldızlar için stil ayarları */
+      position: absolute;
+      display: inline-block;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 1px 0 2px 2px rgba(255, 255, 255);
+    }
+    .star-1 { /* Farklı yıldızların boyut ve konum ayarları */
+      width: 6px;
+      height: 6px;
+      right: 90px;
+      bottom: 40px;
+    }
+    .star-2 {
+      width: 8px;
+      height: 8px;
+      right: 70px;
+      top: 10px;
+    }
+    .star-3 {
+      width: 5px;
+      height: 5px;
+      right: 60px;
+      bottom: 15px;
+    }
+    .star-4 {
+      width: 3px;
+      height: 3px;
+      right: 40px;
+      bottom: 50px;
+    }
+    .star-5 {
+      width: 4px;
+      height: 4px;
+      right: 10px;
+      bottom: 35px;
+    }
+    .star-6, /* Hareket eden yıldızlar için ayarlar */
+    .star-7,
+    .star-8 {
+      width: 10px;
+      height: 2px;
+      border-radius: 2px;  /* Kenarları yuvarlar */
+      transform: rotate(-45deg);
+      box-shadow: 5px 0px 4px 1px #fff;
+      animation-name: travel;
+      animation-duration: 1.5s;
+      animation-timing-function: ease-out;
+      animation-iteration-count: infinite;
+    }
+    .star-6 {
+      right: 30px;
+      bottom: 30px;
+      animation-delay: -2s;
+    }
+    .star-7 {
+      right: 50px;
+      bottom: 60px;
+    }
+    .star-8 {
+      right: 90px;
+      top: 10px;
+      animation-delay: -4s;
+    }
+
+    @keyframes travel { /* Yıldızların hareket etmesini sağlayan animasyon */
+      0% {
+        transform: rotate(-45deg) translateX(70px);
+      }
+      50% {
+        transform: rotate(-45deg) translateX(-20px);
+        box-shadow: 5px 0px 6px 1px #fff;
+      }
+      100% {
+        transform: rotate(-45deg) translateX(-30px);
+        width: 2px;
+        height: 2px;
+        opacity: 0;
+        box-shadow: none;
+      }
+    }
+
+    #hide-checkbox:checked + .toggle {  /* Buton kontrolü için görünmez bir checkbox */
+      background: #24d7f7;
+    }
+    #hide-checkbox:checked + .toggle .toggle-button {
+      background: #f7ffff;
+      transform: translateX(102px);
+      box-shadow: 0 0 35px 5px rgba(255, 255, 255);
+    }
+    /* Checkbox işaretlendiğinde kraterlerin hareketini sağlar */
+    #hide-checkbox:checked + .toggle .toggle-button .crater {
+      transform: rotate(-45deg) translateX(70px);
+    }
+    #hide-checkbox:checked + .toggle .star {
+      animation: move 2s infinite;
+      transform: none;
+      box-shadow: none;
+    }
+    #hide-checkbox:checked + .toggle .star-1 {
+      width: 40px;
+      height: 10px;
+      border-radius: 10px;
+      background: #fff;
+      left: 20px;
+      top: 25px;
+      box-shadow: none;
+    }
+    #hide-checkbox:checked + .toggle .star-2 {
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      left: 26px;
+      top: 23px;
+      box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
+    }
+    #hide-checkbox:checked + .toggle .star-3 {
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      left: 35px;
+      top: 19px;
+      box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
+    }
+    #hide-checkbox:checked + .toggle .star-4 {
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      left: 46px;
+      top: 21px;
+      box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
+    }
+    #hide-checkbox:checked + .toggle .star-5 {
+      width: 60px;
+      height: 15px;
+      border-radius: 15px;
+      background: #fff;
+      left: 30px;
+      bottom: 20px;
+      box-shadow: none;
+    }
+    #hide-checkbox:checked + .toggle .star-6 {
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      left: 38px;
+      bottom: 20px;
+      box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
+    }
+    #hide-checkbox:checked + .toggle .star-7 {
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border-radius: 50%;
+      left: 52px;
+      bottom: 20px;
+      box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
+    }
+    #hide-checkbox:checked + .toggle .star-8 {
+      width: 21px;
+      height: 21px;
+      background: #fff;
+      border-radius: 50%;
+      left: 70px;
+      top: 59px;
+      box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
+    }
+    @keyframes move {
+      0% {
+        transform: none;
+      }
+      25% {
+        transform: translateX(2px);
+      }
+      100% {
+        transform: translateX(-2px);
+      }
+    }
+    .wrapper p {
+      text-align: center;
+      letter-spacing: 15px;
+      background: #34495e;
+      color: #fff;
+    }
+    .wrapper p.morning {
+      background: #e67e22;
+    }
+
+  </style>
+
     <!-- Header -->
     <nav
-      class="navbar navbar-expand navbar-dark bg-dark"
+      class="navbar navbar-expand navbar-dark"
       aria-label="Second navbar example">
       <!-- Logomuz -->
       <div class="container-fluid">
@@ -90,7 +460,7 @@
           aria-controls="navbarsExample02"
           aria-expanded="false"
           aria-label="Toggle navigation">
-          
+
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -113,11 +483,12 @@
           </ul>
           <!-- Arama butonu -->
           <div class="search-box">
-            <button class="btn-search"><i class="fa fa-search"></i></button>
+            <button class="btn-search"></button>
             <input
-              type="text"
-              class="input-search"
-              placeholder="Type to Search..."/>
+                    type="text"
+                    class="input-search"
+                    placeholder="Aramak istediğiniz..."
+            />
           </div>
          <!-- Aydınlık/karanlık mod butonu -->
           <div class="wrapper">
@@ -168,15 +539,9 @@
       <section class="text-center container">
         <div class="row py-lg-5">
           <div class="col-lg-10 col-md-10 mx-auto">
-            <h1 class="theme-text" >Güçlü Kadınlar </h2>
-            <h1 class="theme-text" >İlham Verici Hikayeler </h2>
-            <p class="theme-text">
-              Güçlü kadınların hikayelerini ve toplumsal cinsiyet eşitliği mücadelesini keşfedin. Her bir belgesel
-               ve film, azmin ve kararlılığın önemini vurgularken, cesur kadınların deneyimlerinden ilham almanızı 
-               sağlıyor. Kendi potansiyelinizi keşfetmek için bu ilham verici yapımları izleyin çünkü her bir hikaye, 
-               zorluklara göğüs geren ve başarıya ulaşan kadınların azmiyle doludur. Eğitimin, öz güvenin ve dayanışmanın
-                önemiyle şekillenen bu yapımlarla, geleceğinizi daha parlak bir hale getirmek için gereken motivasyonu elde edin.
-            </p>
+            <h2 class="theme-text" >Güçlü Kadınlar </h2>
+            <h2 class="theme-text" >İlham Verici Hikayeler </h2>
+            <p class="theme-text" id="typing"></p>
           </div>
         </div>
       </section>
@@ -189,7 +554,7 @@
             style="background-image: url('unsplash-photo-1.jpg')">
             <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
               <!-- Filmin afişi -->
-              <img src= "images/intern.jpg"  /> 
+              <img src= "images/intern.jpg"  />
               <h2 class="align-self-center">Intern</h2>
               <!-- Filmin açıklaması -->
               <p style="text-align: center;">
@@ -226,15 +591,15 @@
               <h2 class="align-self-center">Code:Debugging the</h2>
               <h2 class="align-self-center">Gender Gap </h2>
               <p style="text-align: center;">
-              Bu belgesel, teknoloji sektöründeki cinsiyet eşitsizliğine ve azınlık gruplarının 
-              temsil eksikliğine odaklanıyor. Kadınların teknoloji alanına nasıl daha fazla dahil edilebileceği 
+              Bu belgesel, teknoloji sektöründeki cinsiyet eşitsizliğine ve azınlık gruplarının
+              temsil eksikliğine odaklanıyor. Kadınların teknoloji alanına nasıl daha fazla dahil edilebileceği
               konusunda önemli sorular soruyor ve sektördeki ayrımcılığı gözler önüne seriyor.
             </p>
             </div>
           </div>
         </div>
 
-         <!-- 4. Film --> 
+         <!-- 4. Film -->
         <div class="col">
           <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
             style="background-image: url('unsplash-photo-3.jpg')">
@@ -242,7 +607,7 @@
               <img src= "images/computers.jpeg" />
               <h2 class="align-self-center">The Computers(2014) </h2>
               <p style="text-align: center;">
-              II. Dünya Savaşı sırasında, dünyanın ilk elektronik dijital bilgisayarı ENIAC'ın programlanmasında görev alan altı 
+              II. Dünya Savaşı sırasında, dünyanın ilk elektronik dijital bilgisayarı ENIAC'ın programlanmasında görev alan altı
               kadının hikayesini anlatan bu kısa belgesel, kadınların teknoloji tarihinde nasıl görmezden gelindiğini gösteriyor.
             </p>
             </div>
@@ -257,7 +622,7 @@
               <img src= "images/pictureAScientist.jpeg" />
               <h2 class="align-self-center">Picture a Scientist </h2>
               <p style="text-align: center;">
-              Film, kadınların bilim ve teknoloji alanlarındaki mücadelelerini anlatıyor ve toplumsal cinsiyet eşitliği konusundaki 
+              Film, kadınların bilim ve teknoloji alanlarındaki mücadelelerini anlatıyor ve toplumsal cinsiyet eşitliği konusundaki
               engelleri aşmanın yollarını araştırıyor. Ayrıca, bu alanlarda kadınların nasıl daha fazla görünür hale getirilebileceğine odaklanıyor.
               </p>
             </div>
@@ -272,7 +637,7 @@
               <img src= "images/RGB.jpeg" />
               <h2 class="align-self-center">RBG </h2>
              <p style="text-align: center;">
-              ABD Yüksek Mahkemesi Yargıcı Ruth Bader Ginsburg’un hayatını konu alan bu belgesel, teknolojinin hukuki alanlara 
+              ABD Yüksek Mahkemesi Yargıcı Ruth Bader Ginsburg’un hayatını konu alan bu belgesel, teknolojinin hukuki alanlara
               nasıl etki ettiğini ve Ginsburg’un kadın hakları için verdiği mücadelenin teknoloji dünyasında da yankı bulduğunu gösteriyor.
             </p>
             </div>
@@ -287,7 +652,7 @@
               <img src="images/missRepresentation.jpeg" />
               <h2 class="align-self-center">Miss Representation </h2>
              <p style="text-align: center;">
-              Bu belgesel, medyada kadınların nasıl temsil edildiğini ve bunun, kadınların teknoloji dahil her sektörde liderlik 
+              Bu belgesel, medyada kadınların nasıl temsil edildiğini ve bunun, kadınların teknoloji dahil her sektörde liderlik
               pozisyonlarına erişimlerini nasıl etkilediğini irdeliyor. Teknoloji sektöründeki toplumsal cinsiyet eşitsizliği konularına da değiniyor.
             </p>
             </div>
@@ -302,13 +667,13 @@
               <img src="images/joy.jpg" />
               <h2 class="align-self-center">Joy(2015) </h2>
               <p style="text-align: center;">
-              Joy Mangano’nun başarı hikayesini anlatan bu film, girişimcilik alanında kadınların karşılaştığı 
+              Joy Mangano’nun başarı hikayesini anlatan bu film, girişimcilik alanında kadınların karşılaştığı
               zorlukları ve azimle başarıya ulaşma sürecini işliyor.
               </p>
             </div>
           </div>
         </div>
-        
+
 <!-- 9. Film -->
 <div class="col">
   <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
@@ -317,7 +682,7 @@
       <img src= "images/girlRising.jpeg" />
       <h2 class="align-self-center">Girl Rising(2013) </h2>
      <p style="text-align: center;">
-      Dünya genelinde kız çocuklarının eğitime erişimi ve toplumsal cinsiyet eşitliği konularına dikkat çeken güçlü bir belgeseldir. Film, farklı ülkelerden dokuz genç kızın hayat hikayelerini anlatırken, eğitim yoluyla yaşadıkları zorlukları nasıl aştıklarını ve hayatlarını nasıl değiştirdiklerini gösterir. 
+      Dünya genelinde kız çocuklarının eğitime erişimi ve toplumsal cinsiyet eşitliği konularına dikkat çeken güçlü bir belgeseldir. Film, farklı ülkelerden dokuz genç kızın hayat hikayelerini anlatırken, eğitim yoluyla yaşadıkları zorlukları nasıl aştıklarını ve hayatlarını nasıl değiştirdiklerini gösterir.
     </p>
     </div>
   </div>
@@ -331,7 +696,7 @@
       <img src= "images/sheDidThat.jpeg" />
       <h2 class="align-self-center">She Did That(2019) </h2>
      <p style="text-align: center;">
-      Siyahi kadın girişimcilerin yaşadıkları zorlukları ve iş dünyasında başardıklarını ele alan bu belgesel, kadın 
+      Siyahi kadın girişimcilerin yaşadıkları zorlukları ve iş dünyasında başardıklarını ele alan bu belgesel, kadın
       girişimciler için ilham verici bir içerik sunuyor.
     </p>
     </div>
@@ -347,8 +712,8 @@
       <h2 class="align-self-center">Women Who </h2>
       <h2 class="align-self-center">Code(2016) </h2>
      <p style="text-align: center;">
-      Bu belgesel kısa, ancak teknolojideki kadınların hikayelerini ve kadın yazılım geliştiricilerin 
-      karşılaştıkları cinsiyetçi bariyerleri ele alıyor. Kadınların teknoloji sektöründeki varlığını artırmaya 
+      Bu belgesel kısa, ancak teknolojideki kadınların hikayelerini ve kadın yazılım geliştiricilerin
+      karşılaştıkları cinsiyetçi bariyerleri ele alıyor. Kadınların teknoloji sektöründeki varlığını artırmaya
       yönelik çabalara odaklanıyor.
     </p>
     </div>
@@ -364,8 +729,8 @@
       <h2 class="align-self-center">Chasing Grace</h2>
       <h2 class="align-self-center">Project(2018) </h2>
      <p style="text-align: center;">
-      Bu belgesel serisi, teknoloji sektöründe çalışan kadınların yaşadıkları cinsiyet eşitsizliğine dair 
-      gerçek hikayeleri anlatıyor. Kadınlar için daha eşitlikçi bir gelecek inşa etmek için verilen mücadeleye 
+      Bu belgesel serisi, teknoloji sektöründe çalışan kadınların yaşadıkları cinsiyet eşitsizliğine dair
+      gerçek hikayeleri anlatıyor. Kadınlar için daha eşitlikçi bir gelecek inşa etmek için verilen mücadeleye
       dikkat çekiyor.
     </p>
     </div>
@@ -380,7 +745,7 @@
       <img src="images/becoming.jpeg" />
       <h2 class="align-self-center">Becoming </h2>
      <p style="text-align: center;">
-      Eski ABD First Lady’si Michelle Obama'nın aynı adlı otobiyografisinden uyarlanan bir belgeseldir. Film, 
+      Eski ABD First Lady’si Michelle Obama'nın aynı adlı otobiyografisinden uyarlanan bir belgeseldir. Film,
       Michelle Obama’nın hayatını ve özellikle 2018’de yayımlanan kitabının tanıtım turunu konu alır. Sadece
       politik bir figür olarak değil, bir anne, eş ve güçlü bir kadın olarak kimliğini keşfetme sürecini anlatır.
     </p>
@@ -397,7 +762,7 @@
       <h2 class="align-self-center">The Devil</h2>
       <h2 class="align-self-center"> Wears Prada </h2>
      <p style="text-align: center;">
-      Moda dünyasında geçen bu film, güçlü bir kadın lider olan Miranda Priestly karakteri üzerinden iş dünyasında 
+      Moda dünyasında geçen bu film, güçlü bir kadın lider olan Miranda Priestly karakteri üzerinden iş dünyasında
       kadının gücünü ve etkisini gözler önüne seriyor.
     </p>
     </div>
@@ -412,7 +777,7 @@
       <img src="images/erinbron.jpg" />
       <h2 class="align-self-center">Erin Brockovich </h2>
       <p style="text-align: center;">
-        Gerçek bir hikayeye dayanan bu film, Erin Brockovich’in bir avukatlık firmasında çalışırken büyük bir çevre 
+        Gerçek bir hikayeye dayanan bu film, Erin Brockovich’in bir avukatlık firmasında çalışırken büyük bir çevre
         davasını kazanma hikayesini anlatıyor. Güçlü bir kadının kararlılığı ve mücadelesini gözler önüne seriyor.
       </p>
     </div>
@@ -554,5 +919,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+      <script src="film.js"></script>
   </body>
 </html>
